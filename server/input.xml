@@ -1,0 +1,19 @@
+<DOCUMENT>
+  <!--Сетевые настройки-->
+  <NETWORK>
+      <!--Номер порта сервера чата-->
+      <PORT>7777</PORT>
+  </NETWORK>
+
+  <!--Настройки базы данных MySQL-->
+  <DATABASE>
+      <!--Адрес сервера MySQL ("localhost" если на том же хосте)-->
+      <ADDRESS>localhost</ADDRESS>
+      <!--Наименование базы данных MySQL-->
+      <NAME>chatdb</NAME> 
+      <!--Логин пользователя MySQL-->
+      <USER>g</USER>
+      <!--Пароль пользователя MySQL-->
+      <PASSWORD>q</PASSWORD> 
+  </DATABASE>
+</DOCUMENT>
