@@ -1,0 +1,76 @@
+﻿#include "LoginUnregistered.h"
+
+#include <iostream>
+#include <memory>
+
+
+namespace {
+  //Возможный выбор пользователя
+  enum {
+    INPUT_AGAIN = 1,
+    REGISTRATION,
+    EXIT
+  };
+}
+
+
+
+LoginUnregistered::LoginUnregistered() : State("LoginUnregistered")
+{
+};
+
+
+
+void LoginUnregistered::handle(Chat& chat)
+{
+   const std::string menu = "| " +
+  std::to_string(INPUT_AGAIN) + " - Ввести Логин заново | " + 
+  std::to_string(REGISTRATION) + " - Регистрация | " + 
+  std::to_string(EXIT) + " - Выход из программы : ";
+
+  std::cout << menu;
+  std::string input;
+  std::getline(std::cin >> std::ws, input);
+
+  //Введено более одного символа
+  if (input.length() > 1) {
+    chat.transitionTo(std::move(std::make_unique<LoginUnregistered>()));
+  }
+  //Введён один символ
+  else {
+    //Попытка преобразовать символ в число
+    try {
+      int choice = std::stoi(input);
+      handleChoice(chat, choice);
+    }
+    //Символ не число - вернуться в начало ко вводу
+    catch (const std::invalid_argument&) {
+      chat.transitionTo(std::move(std::make_unique<LoginUnregistered>()));
+    }
+  }
+}
+
+
+
+void LoginUnregistered::handleChoice(Chat& chat, int choice)
+{
+  switch (choice) {
+    case INPUT_AGAIN: {
+      chat.transitionTo(std::move(std::make_unique<LoginInput>()));
+      break;
+    }
+    case REGISTRATION: {
+      chat.transitionTo(std::move(std::make_unique<CreateLogin>()));
+      break;
+    }
+    case EXIT: {
+      chat.exit();
+      break;
+    }
+    default: {
+      std::cin.clear();
+      chat.transitionTo(std::move(std::make_unique<LoginUnregistered>()));
+      break;
+    }
+  }
+}
